@@ -1,0 +1,257 @@
+---
+title: "UPWARD Analysis: Getting Started"
+author: "Chris Mellinger"
+format: 
+  revealjs:
+    smaller: true
+editor: source
+---
+
+## Possibly New Skill: Merging
+
+```{r}
+knitr::opts_chunk$set(
+  echo = FALSE
+)
+library(knitr)
+library(tidyverse)
+```
+
+You will need to merge UPWARD data.
+
+Example: PHQ-9 and demographics data come in two different tables. To analyze condition effects on the PHQ-9 by demographic characteristics, you need to know which PHQ-9 scores go with which demographic characteristics.
+
+Check out the guide in the Master Methods Book online.
+
+## Toy Dataset {.smaller}
+
+Consider a researcher who collects data on people's pre-bed phone usage. Participants are asked what percentage of their pre-bedtime routine is spent looking at a phone on two different weeks. They also reported their average sleep quality.
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{r}
+d1 <- tribble(
+  ~rid,   ~ phone_perc,   ~time,
+  1,            45.5,           1,
+  1,            40.2,           2,
+  2,           36.6,            1,
+  2,            36.2,           2,
+  3,            38.9,           1,
+  3,            39.4,           2
+)
+
+kable(d1)
+```
+
+:::
+
+::: {.column width="50%"}
+
+```{r}
+d2 <- tribble(
+  ~rid,   ~ sleep,
+  1,            "high",
+  2,            "low",
+  3,             "high",
+  4,             "medium"
+)
+
+kable(d2)
+```
+
+:::
+
+::::
+
+## Merging Toy Data
+
+:::: {.columns}
+
+::: {.column width="60%"}
+
+This code requires [Tidyverse](https://www.tidyverse.org/). If you don't have it, run:
+
+```{r, echo = T, eval=F}
+install.packages('tidyverse')
+```
+
+Then in each new R session:
+
+```{r, echo = T, eval=F}
+library(tidyverse)
+```
+
+Our dataframes are called `d1` and `d2`. To merge, we do this:
+
+```{r, echo =T}
+d_merged_left = left_join(
+  d1,
+  d2,
+  by = "rid"
+)
+```
+
+:::
+
+::: {.column width="40%"}
+
+```{r}
+kable(d_merged_left)
+```
+:::
+
+::::
+
+## The Ways We Can Merge
+
+:::: {.columns}
+
+:::{.column width="50%"}
+
+There are four tidyverse functions for merging:
+
+-   `inner_join()`: keeps only the rows that have matches
+-   `right_join()`: keeps everything from the "right-hand" table, only matches from the left-hand table.
+-   `left_join()`: reverse of `right_join()`
+-   `full_join()`: keeps all rows; fills in non-matching rows with `NA`
+
+:::
+
+::: {.column width="50%"}
+
+![Join type illustrations](JoinTypes.webp)
+
+:::
+
+::::
+
+## Toy Dataset Example of Join Types
+
+Recall that our toy dataset included one person in `d2` that was not in `d1`.
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{r}
+kable(d1)
+```
+
+:::
+
+::: {.column width="50%"}
+
+```{r}
+kable(d2)
+```
+
+Person 4 is not in `d1`!
+
+:::
+
+::::
+
+## Toy Dataset Example of Join Types
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{r, echo = T}
+d_full = full_join(
+  d1, d2,
+  by = "rid"
+)
+```
+
+```{r}
+kable(d_full)
+```
+
+:::
+
+::: {.column width="50%"}
+
+```{r, echo=T}
+d_inner = inner_join(
+  d1, d2,
+  by = "rid"
+)
+```
+
+```{r}
+kable(d_inner)
+```
+
+:::
+
+::::
+
+## Toy Dataset Example of Join Types
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{r, echo = T}
+d_left = left_join(
+  d1, d2,
+  by = "rid"
+)
+```
+
+```{r}
+kable(d_left)
+```
+
+:::
+
+::: {.column width="50%"}
+
+```{r, echo=T}
+d_right = right_join(
+  d1, d2,
+  by = "rid"
+)
+```
+
+```{r}
+kable(d_right)
+```
+
+:::
+
+::::
+
+## Joining Advice
+
+- Just pick one and try it; it's hard to get right on the first attempt.
+- Always check the row counts of your dataframes.
+    - You can use `nrow()` or look at the environment pane.
+    - Count the number of unique things with e.g., `length(unique(d1$rid))` or `n_distinct(d2$rid)`
+- Always specify a `by` argument, even if it is obvious
+
+::: {.callout-tip}
+## For This Project
+
+`inner_join()` is probably a good place to start.
+:::
+
+## Coming Soon
+
+I will make resources for:
+
+- regression
+- within-participant analysis
+- moderation
+- mediation
+
+Links will appear in the modules on Canvas, and I will email you when they are there.
+
+::: {.callout-tip}
+## Schedule Meetings with Me!
+
+I am more than willing to help you through sticking points. Just email so we can find a time.
+:::

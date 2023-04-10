@@ -1,0 +1,65 @@
+[
+  {
+    "objectID": "UPWARDGettingStarted_V01.html#possibly-new-skill-merging",
+    "href": "UPWARDGettingStarted_V01.html#possibly-new-skill-merging",
+    "title": "UPWARD Analysis: Getting Started",
+    "section": "Possibly New Skill: Merging",
+    "text": "Possibly New Skill: Merging\n\n\n\nYou will need to merge UPWARD data.\nExample: PHQ-9 and demographics data come in two different tables. To analyze condition effects on the PHQ-9 by demographic characteristics, you need to know which PHQ-9 scores go with which demographic characteristics.\nCheck out the guide in the Master Methods Book online."
+  },
+  {
+    "objectID": "UPWARDGettingStarted_V01.html#toy-dataset",
+    "href": "UPWARDGettingStarted_V01.html#toy-dataset",
+    "title": "UPWARD Analysis: Getting Started",
+    "section": "Toy Dataset",
+    "text": "Toy Dataset\nConsider a researcher who collects data on people’s pre-bed phone usage. Participants are asked what percentage of their pre-bedtime routine is spent looking at a phone on two different weeks. They also reported their average sleep quality.\n\n\n\n\n\n\n\nrid\nphone_perc\ntime\n\n\n\n\n1\n45.5\n1\n\n\n1\n40.2\n2\n\n\n2\n36.6\n1\n\n\n2\n36.2\n2\n\n\n3\n38.9\n1\n\n\n3\n39.4\n2\n\n\n\n\n\n\n\n\n\n\n\nrid\nsleep\n\n\n\n\n1\nhigh\n\n\n2\nlow\n\n\n3\nhigh\n\n\n4\nmedium"
+  },
+  {
+    "objectID": "UPWARDGettingStarted_V01.html#merging-toy-data",
+    "href": "UPWARDGettingStarted_V01.html#merging-toy-data",
+    "title": "UPWARD Analysis: Getting Started",
+    "section": "Merging Toy Data",
+    "text": "Merging Toy Data\n\n\nThis code requires Tidyverse. If you don’t have it, run:\n\ninstall.packages('tidyverse')\n\nThen in each new R session:\n\nlibrary(tidyverse)\n\nOur dataframes are called d1 and d2. To merge, we do this:\n\nd_merged_left = left_join(\n  d1,\n  d2,\n  by = \"rid\"\n)\n\n\n\n\n\n\n\nrid\nphone_perc\ntime\nsleep\n\n\n\n\n1\n45.5\n1\nhigh\n\n\n1\n40.2\n2\nhigh\n\n\n2\n36.6\n1\nlow\n\n\n2\n36.2\n2\nlow\n\n\n3\n38.9\n1\nhigh\n\n\n3\n39.4\n2\nhigh"
+  },
+  {
+    "objectID": "UPWARDGettingStarted_V01.html#the-ways-we-can-merge",
+    "href": "UPWARDGettingStarted_V01.html#the-ways-we-can-merge",
+    "title": "UPWARD Analysis: Getting Started",
+    "section": "The Ways We Can Merge",
+    "text": "The Ways We Can Merge\n\n\nThere are four tidyverse functions for merging:\n\ninner_join(): keeps only the rows that have matches\nright_join(): keeps everything from the “right-hand” table, only matches from the left-hand table.\nleft_join(): reverse of right_join()\nfull_join(): keeps all rows; fills in non-matching rows with NA\n\n\n\n\n\nJoin type illustrations"
+  },
+  {
+    "objectID": "UPWARDGettingStarted_V01.html#toy-dataset-example-of-join-types",
+    "href": "UPWARDGettingStarted_V01.html#toy-dataset-example-of-join-types",
+    "title": "UPWARD Analysis: Getting Started",
+    "section": "Toy Dataset Example of Join Types",
+    "text": "Toy Dataset Example of Join Types\nRecall that our toy dataset included one person in d2 that was not in d1.\n\n\n\n\n\n\n\nrid\nphone_perc\ntime\n\n\n\n\n1\n45.5\n1\n\n\n1\n40.2\n2\n\n\n2\n36.6\n1\n\n\n2\n36.2\n2\n\n\n3\n38.9\n1\n\n\n3\n39.4\n2\n\n\n\n\n\n\n\n\n\n\n\nrid\nsleep\n\n\n\n\n1\nhigh\n\n\n2\nlow\n\n\n3\nhigh\n\n\n4\nmedium\n\n\n\n\n\nPerson 4 is not in d1!"
+  },
+  {
+    "objectID": "UPWARDGettingStarted_V01.html#toy-dataset-example-of-join-types-1",
+    "href": "UPWARDGettingStarted_V01.html#toy-dataset-example-of-join-types-1",
+    "title": "UPWARD Analysis: Getting Started",
+    "section": "Toy Dataset Example of Join Types",
+    "text": "Toy Dataset Example of Join Types\n\n\n\nd_full = full_join(\n  d1, d2,\n  by = \"rid\"\n)\n\n\n\n\n\n\nrid\nphone_perc\ntime\nsleep\n\n\n\n\n1\n45.5\n1\nhigh\n\n\n1\n40.2\n2\nhigh\n\n\n2\n36.6\n1\nlow\n\n\n2\n36.2\n2\nlow\n\n\n3\n38.9\n1\nhigh\n\n\n3\n39.4\n2\nhigh\n\n\n4\nNA\nNA\nmedium\n\n\n\n\n\n\n\nd_inner = inner_join(\n  d1, d2,\n  by = \"rid\"\n)\n\n\n\n\n\n\nrid\nphone_perc\ntime\nsleep\n\n\n\n\n1\n45.5\n1\nhigh\n\n\n1\n40.2\n2\nhigh\n\n\n2\n36.6\n1\nlow\n\n\n2\n36.2\n2\nlow\n\n\n3\n38.9\n1\nhigh\n\n\n3\n39.4\n2\nhigh"
+  },
+  {
+    "objectID": "UPWARDGettingStarted_V01.html#toy-dataset-example-of-join-types-2",
+    "href": "UPWARDGettingStarted_V01.html#toy-dataset-example-of-join-types-2",
+    "title": "UPWARD Analysis: Getting Started",
+    "section": "Toy Dataset Example of Join Types",
+    "text": "Toy Dataset Example of Join Types\n\n\n\nd_left = left_join(\n  d1, d2,\n  by = \"rid\"\n)\n\n\n\n\n\n\nrid\nphone_perc\ntime\nsleep\n\n\n\n\n1\n45.5\n1\nhigh\n\n\n1\n40.2\n2\nhigh\n\n\n2\n36.6\n1\nlow\n\n\n2\n36.2\n2\nlow\n\n\n3\n38.9\n1\nhigh\n\n\n3\n39.4\n2\nhigh\n\n\n\n\n\n\n\nd_right = right_join(\n  d1, d2,\n  by = \"rid\"\n)\n\n\n\n\n\n\nrid\nphone_perc\ntime\nsleep\n\n\n\n\n1\n45.5\n1\nhigh\n\n\n1\n40.2\n2\nhigh\n\n\n2\n36.6\n1\nlow\n\n\n2\n36.2\n2\nlow\n\n\n3\n38.9\n1\nhigh\n\n\n3\n39.4\n2\nhigh\n\n\n4\nNA\nNA\nmedium"
+  },
+  {
+    "objectID": "UPWARDGettingStarted_V01.html#joining-advice",
+    "href": "UPWARDGettingStarted_V01.html#joining-advice",
+    "title": "UPWARD Analysis: Getting Started",
+    "section": "Joining Advice",
+    "text": "Joining Advice\n\nJust pick one and try it; it’s hard to get right on the first attempt.\nAlways check the row counts of your dataframes.\n\nYou can use nrow() or look at the environment pane.\nCount the number of unique things with e.g., length(unique(d1$rid)) or n_distinct(d2$rid)\n\nAlways specify a by argument, even if it is obvious\n\n\n\n\n\n\n\nFor This Project\n\n\ninner_join() is probably a good place to start."
+  },
+  {
+    "objectID": "UPWARDGettingStarted_V01.html#coming-soon",
+    "href": "UPWARDGettingStarted_V01.html#coming-soon",
+    "title": "UPWARD Analysis: Getting Started",
+    "section": "Coming Soon",
+    "text": "Coming Soon\nI will make resources for:\n\nregression\nwithin-participant analysis\nmoderation\nmediation\n\nLinks will appear in the modules on Canvas, and I will email you when they are there.\n\n\n\n\n\n\nSchedule Meetings with Me!\n\n\nI am more than willing to help you through sticking points. Just email so we can find a time."
+  }
+]
